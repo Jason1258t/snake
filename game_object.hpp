@@ -6,7 +6,6 @@
 enum class GameObjectType
 {
 	EMPTY,
-	SNAKE_HEAD,
 	SNAKE_BODY,
 	APPLE
 };
@@ -36,22 +35,9 @@ public:
 
 class SnakeSegment : public GameObject
 {
-private:
-	bool isHead;
-
 public:
-	SnakeSegment(const Vector2D& pos, bool head = false) :
-		GameObject(pos, head ? GameObjectType::SNAKE_HEAD : GameObjectType::SNAKE_BODY),
-		isHead(head) {}
-
-	bool setIsHead(bool head)
-	{
-		isHead = head;
-		type = head ? GameObjectType::SNAKE_HEAD : GameObjectType::SNAKE_BODY;
-		return true;
-	}
-
-	bool getIsHead() const { return isHead; }
+	SnakeSegment(const Vector2D& pos) :
+		GameObject(pos, GameObjectType::SNAKE_BODY) {}
 };
 
 class Apple : public GameObject

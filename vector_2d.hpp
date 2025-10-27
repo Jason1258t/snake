@@ -38,4 +38,14 @@ namespace Direction
 	constexpr Vector2D LEFT = { -1, 0 };
 	constexpr Vector2D RIGHT = { 1, 0 };
 	constexpr Vector2D NONE = { 0, 0 };
+
+	static bool isDirectionValid(const Vector2D& direction)
+	{
+		return direction == Direction::UP || direction == Direction::DOWN || direction == Direction::LEFT || direction == Direction::RIGHT;
+	}
+	
+	static bool isOppositeDirection(const Vector2D& current, const Vector2D& next)
+	{
+		return (current + next == Vector2D{ 0, 0 });
+	}
 }
