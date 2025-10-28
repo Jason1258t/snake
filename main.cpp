@@ -1,5 +1,6 @@
-#include "console_renderer.hpp"
 #include "domain/game_engine.hpp"
+#include "render/console_renderer.hpp"
+#include <thread>
 
 int main()
 {
@@ -12,11 +13,24 @@ int main()
 	segments.push_back(std::make_unique<SnakeSegment>(startPos));
 	segments.push_back(std::make_unique<SnakeSegment>(startPos + Direction::LEFT));
 
-	Snake snake = Snake(segments, Direction::RIGHT);
+	Snake snake = Snake(std::move(segments), Direction::RIGHT);
 
 	GameField field = GameField(GameConfig::FIELD_WIDTH, GameConfig::FIELD_HEIGHT);
-	GameEngine engine = GameEngine(snake, field);
+	GameEngine engine = GameEngine(std::move(snake), std::move(field));
 
 	InputManager::InputManager input;
 	engine.registerInputManager(input);
+
+	while (engine.getState() == GameState::RUNNING || engine.getState() == GameState::PAUSE)
+	{
+		input.handleInput();
+		engine.update();
+		renderer.render(engine.getField(), engine.getScore());
+		std::this_thread::sleep_for(std::chrono::milliseconds(GameConfig::TICK_DURATION));
+	}
+
+	if (engine.getState() == GameState::GAME_OVER)
+		renderer.showGameOver(engine.getScore());
+
+	_getch();
 }

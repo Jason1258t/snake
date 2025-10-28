@@ -12,8 +12,8 @@ private:
     Vector2D currentDirection;
 
 public:
-    Snake(std::deque<std::unique_ptr<SnakeSegment>> initSegments, const Vector2D& initialDirection) :
-        currentDirection(initialDirection), segments(std::move(initSegments)) {}
+   Snake(std::deque<std::unique_ptr<SnakeSegment>>&& initSegments, const Vector2D& initialDirection)
+    : segments(std::move(initSegments)), currentDirection(initialDirection) {}
 
     bool setDirection(const Vector2D& newDirection)
     {

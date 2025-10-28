@@ -1,8 +1,10 @@
+#pragma once
+
 #include "game_object.hpp"
-#include <memory>
-#include <vector>
-#include <random>
 #include <algorithm>
+#include <memory>
+#include <random>
+#include <vector>
 
 using ObjectsGrid = std::vector<std::vector<std::unique_ptr<GameObject>>>;
 
@@ -12,13 +14,21 @@ private:
 	int width;
 	int height;
 	ObjectsGrid grid;
-    mutable std::mt19937 gen;
+	mutable std::mt19937 gen;
 
 public:
 	GameField(int w, int h) : width(w), height(h)
 	{
 		initializeGrid();
 	}
+
+	// --- Убираем возможность копирования ---
+	GameField(const GameField&) = delete;
+	GameField& operator=(const GameField&) = delete;
+
+	// --- Разрешаем перемещение ---
+	GameField(GameField&&) noexcept = default;
+	GameField& operator=(GameField&&) noexcept = default;
 
 	int getWidth() const { return width; }
 	int getHeight() const { return height; }
@@ -61,7 +71,7 @@ public:
 		{
 			for (int x = 0; x < width; ++x)
 			{
-				Vector2D pos{ static_cast<float>(x), static_cast<float>(y) };
+				Vector2D pos{ x, y };
 				if (isPositionEmpty(pos))
 				{
 					emptyPositions.push_back(pos);
@@ -112,6 +122,7 @@ private:
 	void initializeGrid()
 	{
 		grid.clear();
+		grid.resize(height);
 		for (int y = 0; y < height; ++y)
 		{
 			grid[y].resize(width);
@@ -121,7 +132,6 @@ private:
 			}
 		}
 	}
-
 	std::unique_ptr<GameObject> createEmptyObject(const Vector2D& pos) const
 	{
 		return std::make_unique<GameObject>(pos, GameObjectType::EMPTY);

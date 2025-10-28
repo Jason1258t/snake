@@ -1,8 +1,9 @@
 #include "game_engine.hpp"
+#include <iostream>
 
-GameEngine::GameEngine(Snake initSnake, GameField initField) :
-    field(initField),
-    snake(initSnake),
+GameEngine::GameEngine(Snake&& initSnake, GameField&& initField) :
+    field(std::move(initField)),
+    snake(std::move(initSnake)),
     state(GameState::RUNNING),
     score(0)
 {

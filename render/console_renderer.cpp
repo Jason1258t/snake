@@ -4,55 +4,46 @@
 constexpr int TOTAL_BORDER_PADDING = 2;
 constexpr char BORDER_CHAR = '#';
 
-class ConsoleRenderer : public IRenderer
+bool ConsoleRenderer::initialize()
 {
-private:
-	ConsoleRendererMapper mapper;
+    system("cls");
+    return true;
+}
 
-public:
-	bool initialize() override
-	{
-		system("cls");
-		return true;
-	}
+bool ConsoleRenderer::render(const GameField& field, int score)
+{
+    system("cls");
 
-	bool render(const GameField& field, int score)
-	{
-		system("cls");
+    std::cout << "SNAKE GAME | Score: " << score << "\n";
+    std::cout << std::string(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR) << "\n";
 
-		std::cout << "SNAKE GAME | Score: " << score << "\n";
-		std::cout << std::string(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR) << "\n";
+    const auto& grid = field.getGrid();
+    for (const auto& row : grid)
+    {
+        std::cout << BORDER_CHAR;
+        for (const auto& obj : row)
+        {
+            std::cout << mapper.getDisplayChar(obj->getType());
+        }
+        std::cout << BORDER_CHAR << "\n";
+    }
 
-		const auto& grid = field.getGrid();
-		for (const auto& row : grid)
-		{
-			std::cout << BORDER_CHAR;
-			for (const auto& obj : row)
-			{
+    std::cout << std::string(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR) << "\n";
+    std::cout << "Controls: W/A/S/D  | ESC - Pause\n";
 
-				std::cout << mapper.getDisplayChar(obj->getType());
-			}
+    return true;
+}
 
-			std::cout << BORDER_CHAR << "\n";
-		}
+bool ConsoleRenderer::showGameOver(int finalScore)
+{
+    std::cout << "\n=== GAME OVER ===\n";
+    std::cout << "Final Score: " << finalScore << "\n";
+    std::cout << "Press any key to exit...\n";
+    return true;
+}
 
-		std::cout << std::string(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR) << "\n";
-		std::cout << "Controls: W/A/S/D or Arrows | Q - Quit\n";
-
-		return true;
-	}
-
-	bool showGameOver(int finalScore) override
-	{
-		std::cout << "\n=== GAME OVER ===\n";
-		std::cout << "Final Score: " << finalScore << "\n";
-		std::cout << "Press any key to exit...\n";
-		return true;
-	}
-
-	bool clear() override
-	{
-		system("cls");
-		return true;
-	}
-};
+bool ConsoleRenderer::clear()
+{
+    system("cls");
+    return true;
+}
