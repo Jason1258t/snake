@@ -8,16 +8,7 @@ namespace InputManager
             case 's': case 'S': return InputEvent::DIRECTION_DOWN;
             case 'a': case 'A': return InputEvent::DIRECTION_LEFT;
             case 'd': case 'D': return InputEvent::DIRECTION_RIGHT;
-            case 'p': case 'P': return InputEvent::PAUSE_TOGGLE;
-            case 'q': case 'Q': return InputEvent::QUIT_GAME;
-            case 27:            return InputEvent::QUIT_GAME; // ESC
-        }
-        
-        switch (keyCode) {
-            case 72: return InputEvent::DIRECTION_UP;    // Up arrow
-            case 80: return InputEvent::DIRECTION_DOWN;  // Down arrow
-            case 75: return InputEvent::DIRECTION_LEFT;  // Left arrow  
-            case 77: return InputEvent::DIRECTION_RIGHT; // Right arrow
+            case 'p': case 'P': case 27: return InputEvent::PAUSE_TOGGLE; // ESC
         }
         
         return InputEvent::NONE;
@@ -31,21 +22,12 @@ namespace InputManager
         callbacks[InputEvent::PAUSE_TOGGLE] = callback;
     }
     
-    void InputManager::onQuit(ActionCallback callback) {
-        callbacks[InputEvent::QUIT_GAME] = callback;
-    }
 
     bool InputManager::handleInput() {
-        if (!_kbhit()) {
+        if (!_kbhit())             
             return true;
-        }
 
         int keyCode = _getch();
-        
-        // Обработка стрелок Windows (возвращают два байта: 224 + код)
-        if (keyCode == 0 || keyCode == 224) {
-            keyCode = _getch(); 
-        }
 
         InputEvent event = mapKeyToEvent(keyCode);
 
@@ -65,10 +47,6 @@ namespace InputManager
 
         else if (event != InputEvent::NONE && callbacks.count(event)) {
             callbacks[event]();
-            
-            if (event == InputEvent::QUIT_GAME) {
-                return false;
-            }
         }
         
         return true;

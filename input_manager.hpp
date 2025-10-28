@@ -31,7 +31,6 @@ namespace InputManager
 
         void onDirection(DirectionCallback callback);
         void onPause(ActionCallback callback);
-        void onQuit(ActionCallback callback);
 
         bool handleInput();
     };

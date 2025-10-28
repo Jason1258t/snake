@@ -1,8 +1,4 @@
 #include "game.hpp"
-#include "config.hpp"
-#include "field.hpp"
-#include "game_object.hpp"
-#include "snake.hpp"
 
 class GameEngine
 {
@@ -11,6 +7,7 @@ private:
 	Snake snake;
 	Apple* apple;
 	GameState state;
+	InputManager input;
 	int score;
 
 public:
@@ -20,18 +17,15 @@ public:
 		state(GameState::RUNNING),
 		score(0)
 	{
+		input.onDirection(handleDirectionEvent);
+		input.onPause(handlePause);
 		spawnApple();
 		updateField();
 	}
 
-	bool processInput(char input)
+	void handleInput() 
 	{
-		Vector2D newDirection = getDirectionFromInput(input);
-		if (newDirection != Direction::NONE)
-		{
-			return snake.setDirection(newDirection);
-		}
-		return true;
+		input.handleInput();
 	}
 
 	bool update()
@@ -59,22 +53,6 @@ public:
 		updateField();
 		return true;
 	}
-
-	const GameField& getField() const
-	{
-		return field;
-	}
-
-	int getScore() const
-	{
-		return score;
-	}
-
-	GameState getState() const
-	{
-		return state;
-	}
-
 private:
 	bool spawnApple()
 	{
@@ -87,13 +65,11 @@ private:
 	{
 		field.clearField();
 
-		// Размещаем яблоко
 		if (apple)
 		{
 			field.placeObject(apple.get());
 		}
 
-		// Размещаем змейку
 		const auto& segments = snake.getSegments();
 		for (const auto& segment : segments)
 		{
@@ -114,5 +90,25 @@ private:
 		if (!apple)
 			return false;
 		return snake.getHeadPosition() == apple->getPosition();
+	}
+
+
+
+	void handleDirectionEvent(const Vector2D& direction)
+	{
+		if (direction == Direction::NONE) return;
+
+		snake.setDirection(direction);
+	}
+
+	void handlePause() 
+	{
+		if (state == GameState::RUNNING)
+		{
+			state = GameState::PAUSE;
+		} else if (state == GameState::PAUSE)
+		{
+			state = GameState::RUNNING;
+		}
 	}
 };
