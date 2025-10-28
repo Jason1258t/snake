@@ -1,7 +1,6 @@
 #pragma once
 
-#include "config.hpp"
-#include "vector_2d.hpp"
+#include "../utils/vector_2d.hpp"
 
 enum class GameObjectType
 {

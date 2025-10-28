@@ -1,21 +1,22 @@
-#include "console_renderer.cpp"
-#include "game.hpp"
+#include "console_renderer.hpp"
+#include "domain/game_engine.hpp"
 
+int main()
+{
+	ConsoleRenderer renderer;
 
-int main() {
-    ConsoleRenderer renderer;
-   
+	std::deque<std::unique_ptr<SnakeSegment>> segments;
 
-    Vector2D snakeStartPos = {GameConfig::FIELD_WIDTH / 2, GameConfig::FIELD_HEIGHT / 2};
-    Snake snake = Snake(
-        [SnakeSegment(snakeStartPos), SnakeSegment(snakeStartPos + Direction::LEFT)],
-        Direction::RIGHT;
-    )
+	Vector2D startPos = Vector2D{ GameConfig::FIELD_HEIGHT / 2, GameConfig::FIELD_WIDTH / 2 };
 
-    GameEngine game = GameEngine(snake);
+	segments.push_back(std::make_unique<SnakeSegment>(startPos));
+	segments.push_back(std::make_unique<SnakeSegment>(startPos + Direction::LEFT));
 
-    while (game.getState() != GameState::VICTORY || game.getState() != GameState::GAME_OVER)
-    {
+	Snake snake = Snake(segments, Direction::RIGHT);
 
-    }
+	GameField field = GameField(GameConfig::FIELD_WIDTH, GameConfig::FIELD_HEIGHT);
+	GameEngine engine = GameEngine(snake, field);
+
+	InputManager::InputManager input;
+	engine.registerInputManager(input);
 }

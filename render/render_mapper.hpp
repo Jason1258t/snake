@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_map>
-#include "game_object.hpp"
+#include "../objects/game_object.hpp"
 
 class ConsoleRendererMapper
 {
@@ -12,8 +12,7 @@ public:
     {
         symbolMap = {
             {GameObjectType::EMPTY, ' '},
-            {GameObjectType::SNAKE_HEAD, 'O'},
-            {GameObjectType::SNAKE_BODY, 'o'},
+            {GameObjectType::SNAKE_BODY, 'O'},
             {GameObjectType::APPLE, '@'}
         };
     }

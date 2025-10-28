@@ -1,5 +1,4 @@
-#include "render_mapper.hpp"
-#include "renderer.hpp"
+#include "console_renderer.hpp"
 #include <iostream>
 
 constexpr int TOTAL_BORDER_PADDING = 2;
@@ -17,7 +16,7 @@ public:
 		return true;
 	}
 
-	bool render(const GameField& field, int score) override
+	bool render(const GameField& field, int score)
 	{
 		system("cls");
 
@@ -28,17 +27,12 @@ public:
 		for (const auto& row : grid)
 		{
 			std::cout << BORDER_CHAR;
-			for (const auto* obj : row)
+			for (const auto& obj : row)
 			{
-				if (obj)
-				{
-					std::cout << mapper.getDisplayChar(obj->getType());
-				}
-				else
-				{
-					std::cout << ' ';
-				}
+
+				std::cout << mapper.getDisplayChar(obj->getType());
 			}
+
 			std::cout << BORDER_CHAR << "\n";
 		}
 
