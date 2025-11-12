@@ -16,7 +16,7 @@ bool GameField::IsPositionEmpty(const Vector2D& pos) const
 	if (!IsPositionValid(pos))
 		return false;
 
-	auto& cell = grid[static_cast<int>(pos.y)][static_cast<int>(pos.x)];
+	auto& cell = grid[pos.y][pos.x];
 	if (!cell)
 		return true;
 
@@ -59,7 +59,7 @@ GameObject* GameField::GetObjectAt(const Vector2D& pos) const
 {
 	if (!IsPositionValid(pos))
 		return nullptr;
-	return grid[static_cast<int>(pos.y)][static_cast<int>(pos.x)].get();
+	return grid[pos.y][pos.x].get();
 }
 
 bool GameField::PlaceObject(std::unique_ptr<GameObject> obj)
@@ -68,7 +68,7 @@ bool GameField::PlaceObject(std::unique_ptr<GameObject> obj)
 		return false;
 
 	Vector2D pos = obj->GetPosition();
-	grid[static_cast<int>(pos.y)][static_cast<int>(pos.x)] = std::move(obj);
+	grid[pos.y][pos.x] = std::move(obj);
 	return true;
 }
 
@@ -77,7 +77,7 @@ bool GameField::RemoveObjectAt(const Vector2D& pos)
 	if (!IsPositionValid(pos))
 		return false;
 
-	grid[static_cast<int>(pos.y)][static_cast<int>(pos.x)] = СreateEmptyObject(pos);
+	grid[pos.y][pos.x] = СreateEmptyObject(pos);
 	return true;
 }
 

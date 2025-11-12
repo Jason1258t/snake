@@ -30,9 +30,10 @@ private:
 	bool CheckAppleCollision() const;
 	void HandleDirectionEvent(const Vector2D& direction);
 	void HandlePause();
+	Snake makeSnake();
 
 public:
-	GameEngine(Snake&& initSnake, GameField&& initField);
+	GameEngine(GameField&& initField);
 	bool Update();
 	void RegisterInputManager(InputManager::InputManager& inputManager);
 

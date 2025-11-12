@@ -64,6 +64,6 @@ bool ConsoleRenderer::ShowGameOver(int finalScore)
 
 bool ConsoleRenderer::Clear()
 {
-	::clear();
+	clear();
 	return true;
 }

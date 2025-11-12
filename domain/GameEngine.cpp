@@ -1,9 +1,22 @@
 #include "GameEngine.hpp"
 #include <iostream>
 
-GameEngine::GameEngine(Snake&& initSnake, GameField&& initField) :
+Snake GameEngine::makeSnake()
+{
+	std::deque<std::unique_ptr<SnakeSegment>> segments;
+
+	Vector2D startPos = Vector2D{ field.GetHeight() / 2, field.GetWidth() / 2 };
+
+	segments.push_back(std::make_unique<SnakeSegment>(startPos));
+	segments.push_back(std::make_unique<SnakeSegment>(startPos + Direction::LEFT));
+
+	Snake snake = Snake(std::move(segments), Direction::RIGHT);
+	return snake;
+}
+
+GameEngine::GameEngine(GameField&& initField) :
 	field(std::move(initField)),
-	snake(std::move(initSnake)),
+	snake(makeSnake()),
 	state(GameState::RUNNING),
 	score(0)
 {
