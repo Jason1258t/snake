@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../input/input_manager.hpp"
-#include "../objects/field.hpp"
-#include "../objects/game_object.hpp"
-#include "../objects/snake.hpp"
+#include "../input/InputManager.hpp"
+#include "../objects/Snake.hpp"
+#include "../objects/GameField.hpp"
+#include "../objects/GameObject.hpp"
 #include "config.hpp"
 #include <memory>
 

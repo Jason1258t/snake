@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game_object.hpp"
+#include "GameObject.hpp"
 #include <algorithm>
 #include <memory>
 #include <random>
@@ -47,7 +47,7 @@ public:
 		if (!cell)
 			return true;
 
-		return cell->getType() == GameObjectType::EMPTY;
+		return cell->GetType() == GameObjectType::EMPTY;
 	}
 
 	Vector2D getRandomEmptyPosition() const
@@ -91,10 +91,10 @@ public:
 
 	bool placeObject(std::unique_ptr<GameObject> obj)
 	{
-		if (!obj || !isPositionValid(obj->getPosition()))
+		if (!obj || !isPositionValid(obj->GetPosition()))
 			return false;
 
-		Vector2D pos = obj->getPosition();
+		Vector2D pos = obj->GetPosition();
 		grid[static_cast<int>(pos.y)][static_cast<int>(pos.x)] = std::move(obj);
 		return true;
 	}

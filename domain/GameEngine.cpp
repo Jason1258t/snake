@@ -1,4 +1,4 @@
-#include "game_engine.hpp"
+#include "GameEngine.hpp"
 #include <iostream>
 
 GameEngine::GameEngine(Snake&& initSnake, GameField&& initField) :
@@ -18,7 +18,7 @@ bool GameEngine::Update()
 		return false;
 	}
 
-	snake.move();
+	snake = snake.move();
 
 	if (CheckWallCollision() || snake.checkSelfCollision())
 	{
@@ -28,7 +28,7 @@ bool GameEngine::Update()
 
 	if (CheckAppleCollision())
 	{
-		snake.grow();
+		snake = snake.grow();
 		score += GameConfig::APPLE_SCORE_VALUE;
 		SpawnApple();
 	}
@@ -39,11 +39,11 @@ bool GameEngine::Update()
 
 void GameEngine::RegisterInputManager(InputManager::InputManager& inputManager)
 {
-	inputManager.onDirection([this](Vector2D direction) {
+	inputManager.SetOnDirection([this](Vector2D direction) {
 		this->HandleDirectionEvent(direction);
 	});
 
-	inputManager.onPause([this]() {
+	inputManager.SetOnPause([this]() {
 		this->HandlePause();
 	});
 }
@@ -61,13 +61,13 @@ bool GameEngine::UpdateField()
 
 	if (apple)
 	{
-		field.placeObject(std::make_unique<Apple>(apple->getPosition()));
+		field.placeObject(std::make_unique<Apple>(apple->GetPosition()));
 	}
 
 	const auto& segments = snake.getSegments();
 	for (const auto& segment : segments)
 	{
-		field.placeObject(std::make_unique<SnakeSegment>(segment->getPosition()));
+		field.placeObject(std::make_unique<SnakeSegment>(segment->GetPosition()));
 	}
 
 	return true;
@@ -81,7 +81,7 @@ bool GameEngine::CheckWallCollision() const
 
 bool GameEngine::CheckAppleCollision() const
 {
-	return snake.getHeadPosition() == apple->getPosition();
+	return snake.getHeadPosition() == apple->GetPosition();
 }
 
 void GameEngine::HandleDirectionEvent(const Vector2D& direction)
@@ -89,17 +89,20 @@ void GameEngine::HandleDirectionEvent(const Vector2D& direction)
 	if (direction == Direction::NONE)
 		return;
 
-	snake.setDirection(direction);
+	snake = snake.withDirection(direction);
 }
 
 void GameEngine::HandlePause()
 {
-	if (state == GameState::RUNNING)
+	switch (state)
 	{
+	case GameState::RUNNING:
 		state = GameState::PAUSE;
-	}
-	else if (state == GameState::PAUSE)
-	{
+		break;
+	case GameState::PAUSE:
 		state = GameState::RUNNING;
+		break;
+	default:
+		break;
 	}
 }

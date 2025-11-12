@@ -1,5 +1,5 @@
 #pragma once
-#include "../utils/vector_2d.hpp"
+#include "../utils/Vector2D.hpp"
 #include <functional>
 #include <unordered_map>
 
@@ -18,23 +18,23 @@ namespace InputManager
 	class InputManager
 	{
 	public:
-		InputManager() { initialize(); };
+		InputManager() { Initialize(); };
 
-		~InputManager() { cleanup(); }
+		~InputManager() { Cleanup(); }
 
 		using DirectionCallback = std::function<void(Vector2D)>;
 		using ActionCallback = std::function<void()>;
 
-		InputEvent mapKeyToEvent(int keyCode);
-		bool handleInput();
+		InputEvent MapKeyToEvent(int keyCode);
+		bool HandleInput();
 
-		void onDirection(DirectionCallback callback);
-		void onPause(ActionCallback callback);
+		void SetOnDirection(DirectionCallback callback);
+		void SetOnPause(ActionCallback callback);
 
 	private:
-		static void initialize();
-		static void cleanup();
-		void processEvent(InputEvent& event);
+		static void Initialize();
+		static void Cleanup();
+		void ProcessEvent(InputEvent& event);
 		DirectionCallback directionCallback;
 		std::unordered_map<InputEvent, ActionCallback> callbacks;
 	};

@@ -1,5 +1,5 @@
 #pragma once
-#include "../objects/field.hpp"
+#include "../objects/GameField.hpp"
 
 class IRenderer {
 public:

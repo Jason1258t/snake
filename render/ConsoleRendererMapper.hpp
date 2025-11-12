@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_map>
-#include "../objects/game_object.hpp"
+#include "../objects/GameObject.hpp"
 
 class ConsoleRendererMapper
 {

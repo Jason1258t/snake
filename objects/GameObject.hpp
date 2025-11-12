@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../utils/vector_2d.hpp"
+#include "../utils/Vector2D.hpp"
 
 enum class GameObjectType
 {
@@ -22,10 +22,10 @@ public:
 
 	virtual ~GameObject() = default;
 
-	Vector2D getPosition() const { return position; }
-	GameObjectType getType() const { return type; }
+	Vector2D GetPosition() const { return position; }
+	GameObjectType GetType() const { return type; }
 
-	bool setPosition(const Vector2D& newPos)
+	bool SetPosition(const Vector2D& newPos)
 	{
 		position = newPos;
 		return true;
