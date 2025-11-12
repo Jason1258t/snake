@@ -17,13 +17,13 @@ bool ConsoleRenderer::Render(const GameField& field, int score)
 	std::string scoreStr = "SNAKE GAME | Score: " + std::to_string(score);
 	mvprintw(0, 0, "%s", scoreStr.c_str());
 
-	std::string topBorder(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR);
+	std::string topBorder(field.GetWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR);
 	mvprintw(1, 0, "%s", topBorder.c_str());
 
 	const int fieldTopOffset = 2;
 	const int fieldLeftOffset = 1;
 
-	const auto& grid = field.getGrid();
+	const auto& grid = field.GetGrid();
 	for (int y = 0; y < static_cast<int>(grid.size()); y++)
 	{
 		mvprintw(y + fieldTopOffset, 0, "%c", BORDER_CHAR);
@@ -34,10 +34,10 @@ bool ConsoleRenderer::Render(const GameField& field, int score)
 			mvaddch(y + fieldTopOffset, x + fieldLeftOffset, displayChar);
 		}
 
-		mvprintw(y + fieldTopOffset, field.getWidth() + fieldLeftOffset, "%c", BORDER_CHAR);
+		mvprintw(y + fieldTopOffset, field.GetWidth() + fieldLeftOffset, "%c", BORDER_CHAR);
 	}
 
-	std::string bottomBorder(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR);
+	std::string bottomBorder(field.GetWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR);
 
 	mvprintw(grid.size() + fieldTopOffset, 0, "%s", bottomBorder.c_str());
 	mvprintw(grid.size() + fieldTopOffset + 1, 0, "Controls: W/A/S/D  | ESC - Pause");

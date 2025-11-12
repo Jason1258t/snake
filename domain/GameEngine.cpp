@@ -18,9 +18,9 @@ bool GameEngine::Update()
 		return false;
 	}
 
-	snake = snake.move();
+	snake = snake.Move();
 
-	if (CheckWallCollision() || snake.checkSelfCollision())
+	if (CheckWallCollision() || snake.CheckSelfCollision())
 	{
 		state = GameState::GAME_OVER;
 		return false;
@@ -28,7 +28,7 @@ bool GameEngine::Update()
 
 	if (CheckAppleCollision())
 	{
-		snake = snake.grow();
+		snake = snake.Grow();
 		score += GameConfig::APPLE_SCORE_VALUE;
 		SpawnApple();
 	}
@@ -50,24 +50,24 @@ void GameEngine::RegisterInputManager(InputManager::InputManager& inputManager)
 
 bool GameEngine::SpawnApple()
 {
-	Vector2D applePos = field.getRandomEmptyPosition();
+	Vector2D applePos = field.GetRandomEmptyPosition();
 	apple = std::make_unique<Apple>(applePos);
 	return true;
 }
 
 bool GameEngine::UpdateField()
 {
-	field.clearField();
+	field.ClearField();
 
 	if (apple)
 	{
-		field.placeObject(std::make_unique<Apple>(apple->GetPosition()));
+		field.PlaceObject(std::make_unique<Apple>(apple->GetPosition()));
 	}
 
-	const auto& segments = snake.getSegments();
+	const auto& segments = snake.GetSegments();
 	for (const auto& segment : segments)
 	{
-		field.placeObject(std::make_unique<SnakeSegment>(segment->GetPosition()));
+		field.PlaceObject(std::make_unique<SnakeSegment>(segment->GetPosition()));
 	}
 
 	return true;
@@ -75,13 +75,13 @@ bool GameEngine::UpdateField()
 
 bool GameEngine::CheckWallCollision() const
 {
-	Vector2D head = snake.getHeadPosition();
-	return !field.isPositionValid(head);
+	Vector2D head = snake.GetHeadPosition();
+	return !field.IsPositionValid(head);
 }
 
 bool GameEngine::CheckAppleCollision() const
 {
-	return snake.getHeadPosition() == apple->GetPosition();
+	return snake.GetHeadPosition() == apple->GetPosition();
 }
 
 void GameEngine::HandleDirectionEvent(const Vector2D& direction)
@@ -89,7 +89,7 @@ void GameEngine::HandleDirectionEvent(const Vector2D& direction)
 	if (direction == Direction::NONE)
 		return;
 
-	snake = snake.withDirection(direction);
+	snake = snake.WithDirection(direction);
 }
 
 void GameEngine::HandlePause()

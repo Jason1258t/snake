@@ -22,20 +22,19 @@ public:
 	Snake& operator=(Snake&& other) = default;
 	~Snake() = default;
 
-	Snake withDirection(const Vector2D& newDirection) const;
+	Snake WithDirection(const Vector2D& newDirection) const;
 
-	Snake move() const;
-	Snake grow() const;
+	Snake Move() const;
+	Snake Grow() const;
 
-	Vector2D getHeadPosition() const { return segments.front()->GetPosition(); }
-	const std::deque<std::unique_ptr<SnakeSegment>>& getSegments() const { return segments; }
-	int getLength() const { return segments.size(); }
-	Vector2D getCurrentDirection() const { return currentDirection; }
+	Vector2D GetHeadPosition() const { return segments.front()->GetPosition(); }
+	const std::deque<std::unique_ptr<SnakeSegment>>& GetSegments() const { return segments; }
+	int GetLength() const { return segments.size(); }
+	Vector2D GetCurrentDirection() const { return currentDirection; }
 
-	bool checkSelfCollision() const;
+	bool CheckSelfCollision() const;
 
 private:
-	Vector2D calculateNewHeadPosition() const;
-	std::unique_ptr<SnakeSegment> createNewHead() const;
-	std::deque<std::unique_ptr<SnakeSegment>> copySegments() const;
+	std::unique_ptr<SnakeSegment> CreateNewHead() const;
+	std::deque<std::unique_ptr<SnakeSegment>> CopySegments(const Snake& snake) const;
 };

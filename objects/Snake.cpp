@@ -7,10 +7,7 @@ Snake::Snake(std::deque<std::unique_ptr<SnakeSegment>>&& initSegments,
 
 Snake::Snake(const Snake& other) : currentDirection(other.currentDirection)
 {
-	for (const auto& segment : other.segments)
-	{
-		segments.push_back(std::make_unique<SnakeSegment>(*segment));
-	}
+	segments = CopySegments(other);
 }
 
 Snake& Snake::operator=(const Snake& other)
@@ -18,61 +15,50 @@ Snake& Snake::operator=(const Snake& other)
 	if (this != &other)
 	{
 		currentDirection = other.currentDirection;
-
-		std::deque<std::unique_ptr<SnakeSegment>> newSegments;
-		for (const auto& segment : other.segments)
-		{
-			newSegments.push_back(std::make_unique<SnakeSegment>(*segment));
-		}
-		segments = std::move(newSegments);
+		segments = CopySegments(other);
 	}
 	return *this;
 }
 
-Snake Snake::withDirection(const Vector2D& newDirection) const
+Snake Snake::WithDirection(const Vector2D& newDirection) const
 {
 	if (Direction::isOppositeDirection(currentDirection, newDirection) || !Direction::isDirectionValid(newDirection))
 		return *this;
 
-	return Snake(copySegments(), newDirection);
+	return Snake(CopySegments(*this), newDirection);
 }
 
-Snake Snake::move() const
+Snake Snake::Move() const
 {
-	auto newSegments = copySegments();
-	newSegments.push_front(createNewHead());
+	auto newSegments = CopySegments(*this);
+	newSegments.push_front(CreateNewHead());
 	newSegments.pop_back();
 	return Snake(std::move(newSegments), currentDirection);
 }
 
-Snake Snake::grow() const
+Snake Snake::Grow() const
 {
-	auto newSegments = copySegments();
-	newSegments.push_front(createNewHead());
+	auto newSegments = CopySegments(*this);
+	newSegments.push_front(CreateNewHead());
 	return Snake(std::move(newSegments), currentDirection);
 }
 
-Vector2D Snake::calculateNewHeadPosition() const
+std::unique_ptr<SnakeSegment> Snake::CreateNewHead() const
 {
-	return segments.front()->GetPosition() + currentDirection;
+	return std::make_unique<SnakeSegment>(segments.front()->GetPosition() + currentDirection);
 }
 
-std::unique_ptr<SnakeSegment> Snake::createNewHead() const
-{
-	return std::make_unique<SnakeSegment>(calculateNewHeadPosition());
-}
-
-std::deque<std::unique_ptr<SnakeSegment>> Snake::copySegments() const
+std::deque<std::unique_ptr<SnakeSegment>> Snake::CopySegments(const Snake& snake) const
 {
 	std::deque<std::unique_ptr<SnakeSegment>> newSegments;
-	for (const auto& segment : segments)
+	for (const auto& segment : snake.GetSegments())
 	{
 		newSegments.push_back(std::make_unique<SnakeSegment>(*segment));
 	}
 	return newSegments;
 }
 
-bool Snake::checkSelfCollision() const
+bool Snake::CheckSelfCollision() const
 {
 	const Vector2D& head = segments.front()->GetPosition();
 	for (size_t i = 1; i < segments.size(); ++i)
