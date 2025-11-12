@@ -2,36 +2,40 @@
 #include "../utils/vector_2d.hpp"
 #include <functional>
 #include <unordered_map>
-#include <conio.h>
 
 namespace InputManager
 {
-    enum class InputEvent {
-        DIRECTION_UP,
-        DIRECTION_DOWN, 
-        DIRECTION_LEFT,
-        DIRECTION_RIGHT,
-        PAUSE_TOGGLE,
-        QUIT_GAME,
-        NONE
-    };
+	enum class InputEvent
+	{
+		NONE,
+		DIRECTION_UP,
+		DIRECTION_DOWN,
+		DIRECTION_LEFT,
+		DIRECTION_RIGHT,
+		PAUSE_TOGGLE
+	};
 
-    using DirectionCallback = std::function<void(Vector2D)>;
-    using ActionCallback = std::function<void()>;
+	class InputManager
+	{
+	public:
+		InputManager() { initialize(); };
 
-    class InputManager {
-    private:
-        std::unordered_map<InputEvent, ActionCallback> callbacks;
-        DirectionCallback directionCallback;
+		~InputManager() { cleanup(); }
 
-        InputEvent mapKeyToEvent(int keyCode);
+		using DirectionCallback = std::function<void(Vector2D)>;
+		using ActionCallback = std::function<void()>;
 
-    public:
-        InputManager() = default;
+		InputEvent mapKeyToEvent(int keyCode);
+		bool handleInput();
 
-        void onDirection(DirectionCallback callback);
-        void onPause(ActionCallback callback);
+		void onDirection(DirectionCallback callback);
+		void onPause(ActionCallback callback);
 
-        bool handleInput();
-    };
-}
+	private:
+		static void initialize();
+		static void cleanup();
+		void processEvent(InputEvent& event);
+		DirectionCallback directionCallback;
+		std::unordered_map<InputEvent, ActionCallback> callbacks;
+	};
+} 

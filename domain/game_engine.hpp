@@ -24,19 +24,19 @@ private:
 	GameState state;
 	int score;
 
-	bool spawnApple();
-	bool updateField();
-	bool checkWallCollision() const;
-	bool checkAppleCollision() const;
-	void handleDirectionEvent(const Vector2D& direction);
-	void handlePause();
+	bool SpawnApple();
+	bool UpdateField();
+	bool CheckWallCollision() const;
+	bool CheckAppleCollision() const;
+	void HandleDirectionEvent(const Vector2D& direction);
+	void HandlePause();
 
 public:
 	GameEngine(Snake&& initSnake, GameField&& initField);
-	bool update();
-	void registerInputManager(InputManager::InputManager& inputManager);
+	bool Update();
+	void RegisterInputManager(InputManager::InputManager& inputManager);
 
-	const GameField& getField() const { return field; }
-	int getScore() const { return score; }
-	GameState getState() const { return state; }
+	const GameField& GetField() const { return field; }
+	int GetScore() const { return score; }
+	GameState GetState() const { return state; }
 };

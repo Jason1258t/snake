@@ -1,49 +1,73 @@
 #include "console_renderer.hpp"
-#include <iostream>
+#include <ncurses.h>
+#include <string>
 
 constexpr int TOTAL_BORDER_PADDING = 2;
 constexpr char BORDER_CHAR = '#';
 
 bool ConsoleRenderer::initialize()
 {
-    system("cls");
+    // Уже инициализировано в InputManager
     return true;
 }
 
 bool ConsoleRenderer::render(const GameField& field, int score)
 {
-    system("cls");
+    clear();
 
-    std::cout << "SNAKE GAME | Score: " << score << "\n";
-    std::cout << std::string(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR) << "\n";
+    // Верхняя строка с счетом
+    std::string scoreStr = "SNAKE GAME | Score: " + std::to_string(score);
+    mvprintw(0, 0, "%s", scoreStr.c_str());
 
+    // Верхняя граница
+    std::string topBorder(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR);
+    mvprintw(1, 0, "%s", topBorder.c_str());
+
+    // Игровое поле
     const auto& grid = field.getGrid();
-    for (const auto& row : grid)
+    for (int y = 0; y < grid.size(); y++)
     {
-        std::cout << BORDER_CHAR;
-        for (const auto& obj : row)
+        mvprintw(y + 2, 0, "%c", BORDER_CHAR); // Левая граница
+        
+        for (int x = 0; x < grid[y].size(); x++)
         {
-            std::cout << mapper.getDisplayChar(obj->getType());
+            char displayChar = mapper.getDisplayChar(grid[y][x]->getType());
+            mvaddch(y + 2, x + 1, displayChar);
         }
-        std::cout << BORDER_CHAR << "\n";
+        
+        mvprintw(y + 2, field.getWidth() + 1, "%c", BORDER_CHAR); // Правая граница
     }
 
-    std::cout << std::string(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR) << "\n";
-    std::cout << "Controls: W/A/S/D  | ESC - Pause\n";
+    // Нижняя граница
+    std::string bottomBorder(field.getWidth() + TOTAL_BORDER_PADDING, BORDER_CHAR);
+    mvprintw(grid.size() + 2, 0, "%s", bottomBorder.c_str());
 
+    // Управление
+    mvprintw(grid.size() + 3, 0, "Controls: W/A/S/D  | ESC - Pause");
+
+    refresh();
     return true;
 }
 
 bool ConsoleRenderer::showGameOver(int finalScore)
 {
-    std::cout << "\n=== GAME OVER ===\n";
-    std::cout << "Final Score: " << finalScore << "\n";
-    std::cout << "Press any key to exit...\n";
+    clear();
+    
+    int height, width;
+    getmaxyx(stdscr, height, width);
+    
+    int y = height / 2 - 2;
+    
+    mvprintw(y++, width/2 - 7, "=== GAME OVER ===");
+    mvprintw(y++, width/2 - 8, "Final Score: %d", finalScore);
+    mvprintw(y++, width/2 - 12, "Press any key to exit...");
+    
+    refresh();
     return true;
 }
 
 bool ConsoleRenderer::clear()
 {
-    system("cls");
+    ::clear(); // Вызов функции ncurses
     return true;
 }

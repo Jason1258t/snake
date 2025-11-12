@@ -19,18 +19,16 @@ int main()
 	GameEngine engine = GameEngine(std::move(snake), std::move(field));
 
 	InputManager::InputManager input;
-	engine.registerInputManager(input);
+	engine.RegisterInputManager(input);
 
-	while (engine.getState() == GameState::RUNNING || engine.getState() == GameState::PAUSE)
+	while (engine.GetState() == GameState::RUNNING || engine.GetState() == GameState::PAUSE)
 	{
 		input.handleInput();
-		engine.update();
-		renderer.render(engine.getField(), engine.getScore());
+		engine.Update();
+		renderer.render(engine.GetField(), engine.GetScore());
 		std::this_thread::sleep_for(std::chrono::milliseconds(GameConfig::TICK_DURATION));
 	}
 
-	if (engine.getState() == GameState::GAME_OVER)
-		renderer.showGameOver(engine.getScore());
-
-	_getch();
+	if (engine.GetState() == GameState::GAME_OVER)
+		renderer.showGameOver(engine.GetScore());
 }
