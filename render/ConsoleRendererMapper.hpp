@@ -1,33 +1,34 @@
 #pragma once
-#include <unordered_map>
 #include "../objects/GameObject.hpp"
+#include <unordered_map>
 
 class ConsoleRendererMapper
 {
 private:
-    std::unordered_map<GameObjectType, char> symbolMap;
+	std::unordered_map<GameObjectType, char> symbolMap;
 
 public:
-    ConsoleRendererMapper()
-    {
-        symbolMap = {
-            {GameObjectType::EMPTY, ' '},
-            {GameObjectType::SNAKE_BODY, 'O'},
-            {GameObjectType::APPLE, '@'}
-        };
-    }
+	ConsoleRendererMapper()
+	{
+		symbolMap = {
+			{ GameObjectType::EMPTY, ' ' },
+			{ GameObjectType::SNAKE_BODY, 'O' },
+			{ GameObjectType::APPLE, '@' }
+		};
+	}
 
-    char getDisplayChar(GameObjectType type) const
-    {
-        auto it = symbolMap.find(type);
-        if (it != symbolMap.end()) {
-            return it->second;
-        }
-        return '?';
-    }
+	char GetDisplayChar(GameObjectType type) const
+	{
+		auto item = symbolMap.find(type);
+		if (item != symbolMap.end())
+		{
+			return item->second;
+		}
+		return '?';
+	}
 
-    void setSymbol(GameObjectType type, char symbol)
-    {
-        symbolMap[type] = symbol;
-    }
+	void SetSymbol(GameObjectType type, char symbol)
+	{
+		symbolMap[type] = symbol;
+	}
 };

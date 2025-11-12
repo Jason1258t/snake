@@ -5,14 +5,14 @@
 constexpr int TOTAL_BORDER_PADDING = 2;
 constexpr char BORDER_CHAR = '#';
 
-bool ConsoleRenderer::initialize()
+bool ConsoleRenderer::Initialize()
 {
 	return true;
 }
 
-bool ConsoleRenderer::render(const GameField& field, int score)
+bool ConsoleRenderer::Render(const GameField& field, int score)
 {
-	clear();
+	Clear();
 
 	std::string scoreStr = "SNAKE GAME | Score: " + std::to_string(score);
 	mvprintw(0, 0, "%s", scoreStr.c_str());
@@ -30,7 +30,7 @@ bool ConsoleRenderer::render(const GameField& field, int score)
 
 		for (int x = 0; x < static_cast<int>(grid[y].size()); x++)
 		{
-			char displayChar = mapper.getDisplayChar(grid[y][x]->GetType());
+			char displayChar = mapper.GetDisplayChar(grid[y][x]->GetType());
 			mvaddch(y + fieldTopOffset, x + fieldLeftOffset, displayChar);
 		}
 
@@ -46,9 +46,9 @@ bool ConsoleRenderer::render(const GameField& field, int score)
 	return true;
 }
 
-bool ConsoleRenderer::showGameOver(int finalScore)
+bool ConsoleRenderer::ShowGameOver(int finalScore)
 {
-	clear();
+	Clear();
 
 	int height, width;
 	getmaxyx(stdscr, height, width);
@@ -62,7 +62,7 @@ bool ConsoleRenderer::showGameOver(int finalScore)
 	return true;
 }
 
-bool ConsoleRenderer::clear()
+bool ConsoleRenderer::Clear()
 {
 	::clear();
 	return true;

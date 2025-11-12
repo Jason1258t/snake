@@ -9,8 +9,8 @@ private:
 	ConsoleRendererMapper mapper;
 
 public:
-	bool initialize() override;
-	bool render(const GameField& field, int score) override;
-	bool showGameOver(int finalScore) override;
-	bool clear() override;
+	bool Initialize() override;
+	bool Render(const GameField& field, int score) override;
+	bool ShowGameOver(int finalScore) override;
+	bool Clear() override;
 };

@@ -29,12 +29,12 @@ int main()
 	{
 		input.HandleInput();
 		engine.Update();
-		renderer.render(engine.GetField(), engine.GetScore());
+		renderer.Render(engine.GetField(), engine.GetScore());
 		std::this_thread::sleep_for(std::chrono::milliseconds(GameConfig::TICK_DURATION));
 	}
 
 	if (engine.GetState() == GameState::GAME_OVER)
-		renderer.showGameOver(engine.GetScore());
+		renderer.ShowGameOver(engine.GetScore());
 
 	while (true)
 		;
