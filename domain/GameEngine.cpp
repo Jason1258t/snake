@@ -1,7 +1,7 @@
 #include "GameEngine.hpp"
 #include <iostream>
 
-Snake GameEngine::makeSnake()
+Snake GameEngine::MakeSnake()
 {
 	std::deque<std::unique_ptr<SnakeSegment>> segments;
 
@@ -16,7 +16,7 @@ Snake GameEngine::makeSnake()
 
 GameEngine::GameEngine(GameField&& initField) :
 	field(std::move(initField)),
-	snake(makeSnake()),
+	snake(MakeSnake()),
 	state(GameState::RUNNING),
 	score(0)
 {

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "../input/InputManager.hpp"
-#include "../objects/Snake.hpp"
 #include "../objects/GameField.hpp"
 #include "../objects/GameObject.hpp"
+#include "../objects/Snake.hpp"
 #include "config.hpp"
 #include <memory>
 
@@ -30,7 +30,7 @@ private:
 	bool CheckAppleCollision() const;
 	void HandleDirectionEvent(const Vector2D& direction);
 	void HandlePause();
-	Snake makeSnake();
+	Snake MakeSnake();
 
 public:
 	GameEngine(GameField&& initField);
